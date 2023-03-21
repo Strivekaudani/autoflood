@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>AutoFlood | Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Hind&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Barlow+Condensed:500,600,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/open-iconic-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/animate.css') }}">
+
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/magnific-popup.css') }}">
+
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/aos.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/flaticon.css') }}">
+
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/jquery.timepicker.css') }}">
+
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/icomoon.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/style.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/css/extra.css') }}">
+
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+  	<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0-alpha/Chart.min.js"></script>
+    <script type="text/javascript">
+            FusionCharts.ready(function(){
+              var chartObj = new FusionCharts({
+            type: 'cylinder',
+            dataFormat: 'json',
+            renderAt: 'chart-container',
+            width: '350',
+            height: '370',
+            dataSource: {
+                "chart": {
+                    "theme": "fusion",
+                    "caption": "Water Level in Tank",
+                    "subcaption": "Ultrasonic sensor",
+                    "lowerLimit": "0",
+                    "upperLimit": "1000",
+                    "lowerLimitDisplay": "Empty",
+                    "upperLimitDisplay": "Full",
+                    "numberSuffix": " ltrs",
+                    "showValue": "1",
+                    "chartBottomMargin": "40",
+                    "showValue": "0",
+                                              "cylFillColor": "#35d1fd",
+                                              "cyloriginx": "160",
+                                              "cyloriginy": "270",
+                                              "cylradius": "120",
+                                              "cylheight": "250"
+                },
+                "value": "700",
+                "annotations": {
+                    "origw": "500",
+                    "origh": "290",
+                    "autoscale": "1",
+                    "groups": [{
+                        "id": "range",
+                        "items": [{
+                            "id": "rangeBg",
+                            "type": "rectangle",
+                            "x": "$canvasCenterX-65",
+                            "y": "$chartEndY-30",
+                            "tox": "$canvasCenterX +30",
+                            "toy": "$chartEndY-75",
+                            "fillcolor": "#6caa03"
+                        }, {
+                            "id": "rangeText",
+                            "type": "Text",
+                            "fontSize": "11",
+                            "fillcolor": "#333333",
+                            "text": "700 ltrs",
+                            "x": "$chartCenterX-45",
+                            "y": "$chartEndY-50"
+                        }]
+                    }]
+                }
+
+            },
+            "events": {
+                "rendered": function(evtObj, argObj) {
+                    var fuelVolume = 700;
+                    evtObj.sender.chartInterval = setInterval(function() {
+                        (fuelVolume < 100) ? (fuelVolume = 600) : "";
+                        var consVolume = fuelVolume - (Math.floor(Math.random() * 3));
+                        evtObj.sender.feedData && evtObj.sender.feedData("&value=" + consVolume);
+                        fuelVolume = consVolume;
+                    }, 2000);
+                },
+                //Using real time update event to update the annotation
+                //showing available volume of Diesel
+                "realTimeUpdateComplete": function(evt, arg) {
+                    var annotations = evt.sender.annotations,
+                        dataVal = evt.sender.getData(),
+                        colorVal = (dataVal >= 600) ? "#6caa03" : ((dataVal <= 300) ? "#e44b02" : "#f8bd1b");
+                    //Updating value
+                    annotations && annotations.update('rangeText', {
+                        "text": dataVal + " ltrs"
+                    });
+                    //Changing background color as per value
+                    annotations && annotations.update('rangeBg', {
+                        "fillcolor": colorVal
+                    });
+
+                },
+                "disposed": function(evt, arg) {
+                    clearInterval(evt.sender.chartInterval);
+                }
+            }
+        }
+        );
+              chartObj.render();
+            });
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="index.html">AutoFlood</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	        	<li class="nav-item active"><a href="#" class="nav-link">Dashboard</a></li>
+	        	<li class="nav-item"><a href="services.html" class="nav-link">Account</a></li>
+	        	<li class="nav-item"><a href="{{url_for('signin')}}" class="nav-link">Log Out</a></li>
+	      </div>
+	    </div>
+	  </nav>
+
+    <section class="hero-wrap js-fullheight" style="background-image: url(static/images/tractor.JPG);" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight justify-content-center align-items-center">
+          <div class="col-lg-12 ftco-animate d-flex align-items-center">
+          	<div class="text text-center">
+          		<span class="subheading">Welcome to AutoFlood</span>
+		  				<h1 class="mb-4">Dashboard</h1>
+		  				<p>Automated Irrigation Solutions</p>
+							</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-section ftco-section">
+      <div class="container">
+      	<div class="row justify-content-center pb-3">
+          <div class="col-md-10 heading-section text-center ftco-animate">
+          	<span class="subheading">Dashboard</span>
+            <h2 class="mb-4">Welcome {{nm}} ...</h2>
+            <p>Automated Irrigation Solutions</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ftco-section ftco-no-pt ftco-no-pb">
+      <div class="container-fluid px-0">
+        <div class="row no-gutters">
+          <div class="bg">
+            <div class="col-md text-center d-flex align-items-stretch">
+              <div class="overlay"></div>
+              <div class="widget">
+                <div class="widget-main">
+                  <div class="widget-left">
+                    <img src="http://openweathermap.org/img/w/{{weather.icon}}.png" class="widget-icon">
+                    <h5 class="weather-status">{{weather.description}}</h5>
+                  </div>
+                  <div class="widget-right">
+                    <h5 class="widget-city">{{weather.city}}, {{weather.country}}</h5>
+                    <h5 class="widget-degree">{{weather.temperature}}&#176;c </h5>
+                  </div>
+                </div>
+                <div class="widget-bottom">
+                  <div>
+                    Humidity <span>{{weather.humidity}}%</span>
+                  </div>
+                  <div>
+                    <p id ="dayy"></p><span><p id="datee"></p></span>
+                  </div>
+                  <div>
+                    <br> <span><p id ="timee"></p></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md text-center d-flex align-items-stretch">
+              <div class="container-todo" style="width: 100%; height: 300px;">
+                <div class="scrollbar">
+                  <h1><span class="todo-title">Todo</span>List</h1>
+                  <div class="todo-inputDiv">
+                       <input type="text" class="todo-input" placeholder="What Do You Want to Do...">
+                       <button class="todo-add"><i class="fas fa-plus"></i></button>
+                  </div>
+                  <div class="todo-container">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-section ftco-section">
+      <div class="container">
+      	<div class="row justify-content-center pb-3">
+          <div class="col-md-10 heading-section text-center ftco-animate">
+          	<span class="subheading">IoT in Agriculture</span>
+            <h2 class="mb-4">Input Data</h2>
+            <p>Automated Irrigation Solutions</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ftco-section ftco-no-pt ftco-no-pb">
+			<div class="container-fluid px-0">
+				<div class="tank-chart">
+          <div class="col-md text-center d-flex align-items-stretch">
+						<div class="services-wrap d-flex align-items-center img">
+              <div class="text-about py-5 px-4">
+                <h1 class="logo">
+                  Water Level in Tank
+  							</h1>
+  							<h2>Real - time visualization </h2>
+                <div class="container" id="chart-container">
+                </div>
+              </div>
+						</div>
+					</div>
+          <div class="col-md text-center d-flex align-items-stretch">
+						<div class="services-wrap d-flex align-items-center img">
+              <div class="text-about py-5 px-4">
+                <h1 class="logo">
+                  Moisture Content in Soil
+  							</h1>
+  							<h2>Real - time visualization </h2>
+                <div class="container" style="width: 75%;">
+                  <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-section ftco-section">
+      <div class="container">
+      	<div class="row justify-content-center pb-3">
+          <div class="col-md-10 heading-section text-center ftco-animate">
+          	<span class="subheading">IoT in Agriculture</span>
+            <h2 class="mb-4">Output Data</h2>
+            <p>Automated Irrigation Solutions</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ftco-section ftco-no-pt ftco-no-pb">
+			<div class="container-fluid px-0">
+				<div class="row no-gutters">
+          <div class="col-md text-center d-flex align-items-stretch">
+						<div class="services-wrap d-flex align-items-center img">
+              <div class="text-about py-5 px-4">
+                <h1 class="logo">
+                  Data Log of Outputs
+  							</h1>
+  							<h2>Real - time documentation </h2>
+                <div class="container" style="width: 100%; height: 500px; display: flex; justify-content: center;">
+                  <div class="output-container" style="width: 90%; height: 450px;">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Date</th>
+                          <th scope="col">time</th>
+                          <th scope="col">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>07:00</td>
+                          <td>Siren was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>07:00</td>
+                          <td>Pump was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>07:15</td>
+                          <td>Pump was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>07:15</td>
+                          <td>Siren was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>07:15</td>
+                          <td>Valve was opened</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>07:45</td>
+                          <td>Valve was closed</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>13:00</td>
+                          <td>Pump was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>13:15</td>
+                          <td>Pump was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>13:15</td>
+                          <td>Valve was opened</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>13:45</td>
+                          <td>Valve was closed</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>17:00</td>
+                          <td>Siren was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>17:00</td>
+                          <td>Pump was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>17:15</td>
+                          <td>Pump was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>17:15</td>
+                          <td>Siren was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>17:15</td>
+                          <td>Valve was opened</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">25/07/2020</th>
+                          <td>17:45</td>
+                          <td>Valve was closed</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>07:00</td>
+                          <td>Siren was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>07:00</td>
+                          <td>Pump was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>07:15</td>
+                          <td>Pump was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>07:15</td>
+                          <td>Siren was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>07:15</td>
+                          <td>Valve was opened</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>07:45</td>
+                          <td>Valve was closed</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>13:00</td>
+                          <td>Pump was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>13:15</td>
+                          <td>Pump was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>13:15</td>
+                          <td>Valve was opened</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>13:45</td>
+                          <td>Valve was closed</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>17:00</td>
+                          <td>Siren was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>17:00</td>
+                          <td>Pump was turned on</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>17:15</td>
+                          <td>Pump was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>17:15</td>
+                          <td>Siren was turned off</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>17:15</td>
+                          <td>Valve was opened</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">26/07/2020</th>
+                          <td>17:45</td>
+                          <td>Valve was closed</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2 logo">AutoFlood</h2>
+              <p>Automated Irrigation Solutions</p>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Team 15</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="py-2 d-block">Strive Kaudani</a></li>
+                <li><a href="#" class="py-2 d-block">Chido Dzvova</a></li>
+                <li><a href="#" class="py-2 d-block">Shamiso Sithole</a></li>
+                <li><a href="#" class="py-2 d-block">Blessing Kambanga</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Links</h2>
+              <ul class="list-unstyled">
+                <li><a href="#top" class="py-2 d-block">Home</a></li>
+                <li><a href="#" class="py-2 d-block">Account</a></li>
+                <li><a href="{{url_for('signin')}}" class="py-2 d-block">Log Out</a></li>
+
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Question?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">National University of Science and Technology</span></li>
+	                <li><a href="tel: +263778296203"><span class="icon icon-phone"></span><span class="text">+263778296203</span></a></li>
+	                <li><a href="mailto: autofloodapp@gmail.com"><span class="icon icon-envelope"></span><span class="text">autofloodapp@gmail.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <!-- loader -->
+          <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+          labels: ["03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00", "00:00"],
+          datasets: [
+               {
+                   label: "My First dataset",
+                   fill: true,
+                   lineTension: 0.1,
+                   backgroundColor: "rgba(75, 192, 192, 0.4)",
+                   borderColor: "rgba(75, 192, 192, 1)",
+                   borderCapStyle: 'butt',
+                   borderDash: [],
+                   borderDashOffset: 0.0,
+                   borderJoinStyle: 'miter',
+                   pointBorderColor: "rgba(75,192,192,1)",
+                   pointBackgroundColor: "#fff",
+                   pointBorderWidth: 1,
+                   pointHoverRadius: 5,
+                   pointHitRadius: 10,
+                   data: [65, 59, 80, 81, 56, 55, 40, 60],
+               }, {
+                   label: "My Second dataset",
+                   fill: false,
+                   lineTension: 0.5,
+                   backgroundColor: "rgba(75, 192, 192, 0.4)",
+                   borderColor: "rgb(255, 0, 0)",
+                   borderCapStyle: 'butt',
+                   borderDash: [10, 30],
+                   borderDashOffset: 0.0,
+                   borderJoinStyle: 'miter',
+                   pointBorderColor: "rgba(75,192,192,1)",
+                   pointBackgroundColor: "#fff",
+                   pointBorderWidth: 1,
+                   pointHoverRadius: 5,
+                   pointHitRadius: 10,
+                   data: [62.5, 62.5, 62.5, 62.5, 62.5, 62.5, 62.5, 62.5],
+               }
+           ]}
+        });
+    </script>
+
+    <script type="text/javascript">
+        const container = document.querySelector('.todo-container');
+        var inputValue = document.querySelector('.todo-input');
+        const add = document.querySelector('.todo-add');
+
+        if(window.localStorage.getItem("todos") == undefined){
+           var todos = [];
+           window.localStorage.setItem("todos", JSON.stringify(todos));
+        }
+
+        var todosEX = window.localStorage.getItem("todos");
+        var todos = JSON.parse(todosEX);
+
+
+        class item{
+        constructor(name){
+          this.createItem(name);
+        }
+          createItem(name){
+            var itemBox = document.createElement('div');
+              itemBox.classList.add('item');
+
+            var input = document.createElement('input');
+            input.type = "text";
+            input.disabled = true;
+            input.value = name;
+            input.classList.add('item_input');
+
+            var edit = document.createElement('button');
+            edit.classList.add('edit');
+            edit.innerHTML = "EDIT";
+            edit.addEventListener('click', () => this.edit(input, name));
+
+            var remove = document.createElement('button');
+            remove.classList.add('remove');
+            remove.innerHTML = "REMOVE";
+            remove.addEventListener('click', () => this.remove(itemBox, name));
+
+            container.appendChild(itemBox);
+
+              itemBox.appendChild(input);
+              itemBox.appendChild(edit);
+              itemBox.appendChild(remove);
+
+          }
+
+          edit(input, name){
+              if(input.disabled == true){
+                 input.disabled = !input.disabled;
+              }
+            else{
+                  input.disabled = !input.disabled;
+                  let indexof = todos.indexOf(name);
+                  todos[indexof] = input.value;
+                  window.localStorage.setItem("todos", JSON.stringify(todos));
+              }
+          }
+
+          remove(itemBox, name){
+              itemBox.parentNode.removeChild(itemBox);
+              let index = todos.indexOf(name);
+              todos.splice(index, 1);
+              window.localStorage.setItem("todos", JSON.stringify(todos));
+          }
+        }
+
+        add.addEventListener('click', check);
+        window.addEventListener('keydown', (e) => {
+        if(e.which == 13){
+          check();
+        }
+        })
+
+        function check(){
+        if(inputValue.value != ""){
+          new item(inputValue.value);
+              todos.push(inputValue.value);
+              window.localStorage.setItem("todos", JSON.stringify(todos));
+          inputValue.value = "";
+        }
+        }
+
+
+        for (var v = 0 ; v < todos.length ; v++){
+          new item(todos[v]);
+        }
+
+
+        new item("Buy Fertilizer");
+    </script>
+
+    <script type="text/javascript">
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var mn = today.getMinutes();
+        var wd = today.getDay();
+        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        var day = days[wd];
+        if(dd<10)dd="0"+dd;
+        if(mn<10)mn="0"+mn;
+        if(mm<10)mm="0"+mm;
+        var t = hh+":"+mn
+        var d = dd+"/"+mm+"/"+yyyy;
+        document.querySelector('#datee').innerHTML = d;
+        document.querySelector('#dayy').innerHTML = day;
+        document.querySelector('#timee').innerHTML = t;
+    </script>
+
+
+    <script src="{{url_for('static', filename = '/js/jquery.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/jquery-migrate-3.0.1.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/popper.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/bootstrap.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/jquery.easing.1.3.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/jquery.waypoints.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/jquery.stellar.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/owl.carousel.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/aos.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/jquery.animateNumber.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/scrollax.min.js') }}"></script>
+    <script src="{{url_for('static', filename = '/js/main.js') }}"></script>
+  </body>

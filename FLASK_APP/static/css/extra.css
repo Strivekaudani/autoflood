@@ -1,0 +1,267 @@
+.bg{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.widget{
+  width: 425px;
+  height: 100%;
+  border-radius: 20px;
+  background-color: #7b7975;
+  justify-content: flex-start;
+}
+
+.scrollbar{
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: auto;
+  background-color: #7b7975;
+}
+
+.tank-chart{
+  display: flex;
+  width: 100%;
+  height: 40%;
+  flex-wrap: wrap;
+}
+
+.widget .widget-main{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.widget .widget-left{
+  width: 200px;
+}
+
+.widget .widget-right{
+  width: 200px;
+  color: #fff;
+  margin: 50px 0;
+}
+
+.widget-icon{
+  width: 80%;
+  /* margin-bottom: -30px; */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.weather-status{
+  color: #fff;
+  text-align: center;
+  margin-top: 0;
+  font-size: 1em;
+}
+
+.widget .widget-right .widget-city{
+  font-size: 1em;
+  text-align: center;
+  margin: 0;
+  text-shadow: 1px 1px 5px #707070;
+}
+
+.widget .widget-right .widget-degree{
+  font-size: 3em;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  text-shadow: 1px 1px 5px #707070;
+}
+
+.widget .widget-bottom{
+  width: 100%;
+  position: static;
+  bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+  color: #fff;
+}
+
+.widget .widget-bottom div{
+  margin: 5px 10px 5px 10px;
+  text-align: center;
+  line-height: 100%;
+  font-size: 1em;
+  text-shadow: 1px 1px 5px #707070;
+}
+#timee{
+  font-size: 3em;
+}
+
+.widget-bottom div span{
+  display: block;
+}
+
+#slider{
+  overflow: hidden;
+}
+
+#slider figure{
+  position: relative;
+  width: 300%;
+  margin: 0;
+  left: 0;
+  animation: 15s slider infinite;
+}
+
+#slider figure img{
+  width: 33.3%;
+  float: left;
+}
+
+@keyframes slider {
+  0%{
+    left: 0;
+  }
+
+  30%{
+    left: 0;
+  }
+
+  60%{
+    left: -100%;
+  }
+
+  90%{
+    left: -200%;
+  }
+
+}
+
+.or{
+  background: #ebe8de;
+  width: 25px;
+  margin: -28px auto 10px;
+  text-align: center;
+}
+
+#forgot{
+  text-align: center;
+}
+
+#dont{
+  text-align: center;
+}
+
+hr{
+  margin-top: 20px;
+  width: 60%;
+}
+
+#chexbox{
+  text-align: center;
+}
+
+.scrollbar h1 {
+  color: #fff;
+  font-size: 3rem;
+  font-weight: 50;
+  text-align: center;
+  margin: 1rem 0 3rem;
+  font-family: 'Hind', sans-serif;
+}
+
+.todo-title{
+  color: #bf925b;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.todo-inputDiv{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todo-input{
+   padding: 0.5rem 1rem;
+   outline: none;
+   border: none;
+   height: 50px;
+   border-radius: 25px;
+   width: 350px;
+   margin: 0.25rem;
+   transition: .5s;
+   font-size: 1.15rem;
+}
+
+.todo-add{
+  outline: none;
+   border: none;
+   height: 50px;
+   border-radius: 25px;
+   width: 50px;
+   background-color: #bf925b;
+   color: white;
+   cursor: pointer;
+   transition: .5s;
+   margin: 0.25rem;
+}
+
+.todo-add:hover{
+  opacity: 0.7;
+}
+
+.todo-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.item{
+  padding: 0.5rem;
+  border-bottom: 4px solid #fff;
+  margin-bottom: 1.5rem;
+}
+
+.item_input{
+  background: none;
+  outline: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  width: 245px;
+}
+
+.edit{
+  background: none;
+  outline: none;
+  border: none;
+  color: #bf925b;
+  font-size: 1.4rem;
+  font-family: 'Hind', sans-serif;
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+
+.remove{
+  background: none;
+  outline: none;
+  border: none;
+  color: #5aa6bc;
+  font-size: 1.4rem;
+  font-family: 'Hind', sans-serif;
+  cursor: pointer;
+}
+
+.output-container{
+  background-color: #f5f2ea;
+  overflow: auto;
+}
+
+.container-todo{
+  display: flex;
+  justify-content: center;
+}
+
+.alert-message{
+  color: red;
+}
