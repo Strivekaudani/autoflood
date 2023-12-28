@@ -6,7 +6,7 @@ from flask_mail import Mail, Message
 
 from passlib.hash import sha256_crypt
 
-engine = create_engine("postgres://czwdrkeulypxtp:05041dd05aab98ea511d8a3649f027b423c8bf263747313e2107844f1f814315@ec2-3-223-9-166.compute-1.amazonaws.com:5432/d1d4q91gkb1a92")
+engine = create_engine("*******************************")
 db = scoped_session(sessionmaker(bind=engine))
 
 app = Flask(__name__)
@@ -14,8 +14,8 @@ app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'autofloodapp@gmail.com'
-app.config['MAIL_PASSWORD'] = 'autoflood123'
+app.config['MAIL_USERNAME'] = '****************@gmail.com'
+app.config['MAIL_PASSWORD'] = '*********************'
 
 mail = Mail(app)
 
